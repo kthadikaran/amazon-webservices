@@ -1,0 +1,82 @@
+{
+	"metrics": {
+	  "namespace": "CloudWatchAgent-Windows-Metrics",
+		"append_dimensions": {
+			"InstanceId": "${aws:InstanceId}"
+		},
+		"metrics_collected": {
+			"LogicalDisk": {
+				"measurement": [
+					"% Free Space"
+				],
+				"append_dimensions": {
+					"Windows-Disk": "Disk"
+				},
+				"metrics_collection_interval": 60,
+				"resources": [
+					"*"
+				]
+			},
+			"Memory": {
+				"measurement": [
+					"% Committed Bytes In Use"
+				],
+				"append_dimensions": {
+					"Windows-Memory": "Memory"
+				},
+				"metrics_collection_interval": 60
+			},
+			"Paging File": {
+				"measurement": [
+					"% Usage"
+				],
+				"append_dimensions": {
+					"Windows-PagingFile": "PagingFile"
+				},
+				"metrics_collection_interval": 60,
+				"resources": [
+					"*"
+				]
+			},
+			"PhysicalDisk": {
+				"measurement": [
+					"% Disk Time",
+					"Disk Write Bytes/sec",
+					"Disk Read Bytes/sec",
+					"Disk Writes/sec",
+					"Disk Reads/sec"
+				],
+				"append_dimensions": {
+					"Windows-Disk": "Disk"
+				},
+				"metrics_collection_interval": 60,
+				"resources": [
+					"*"
+				]
+			},
+			"Processor": {
+				"measurement": [
+					"% Processor Time",
+					"% User Time",
+					"% Idle Time",
+					"% Interrupt Time"
+				],
+				"append_dimensions": {
+					"Windows-Processor": "Processor"
+				},
+				"resources": [
+					"_Total"
+				]
+			},
+			"TCPv4": {
+				"measurement": [
+					"Connections Established"
+				],
+				"append_dimensions": {
+					"Windows-Network": "Network"
+				},
+				"metrics_collection_interval": 60
+			}
+		}
+	}
+}
