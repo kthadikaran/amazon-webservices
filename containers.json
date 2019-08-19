@@ -1,0 +1,9 @@
+[
+  {
+    "Description": "Redhat Enterprise WebServer",
+    "Format": "ova",
+    "UserBucket": {
+        "S3Bucket": "nwaytechno.com",
+        "S3Key": "ubuntuvmserver_ova/redhatenterpriseserver.ova"
+    }
+}]
