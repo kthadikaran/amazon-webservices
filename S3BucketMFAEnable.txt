@@ -1,0 +1,17 @@
+S3 Bucket List
+aws s3api list-buckets
+
+S3 Bucket MFA Status Check
+aws s3api get-bucket-versioning --bucket nwaytechno-mumbai
+
+S3 Bucket MFA Enable
+aws s3api put-bucket-versioning --bucket nwaytechno-mumbai --versioning-configuration MFADelete=Enabled,Status=Enabled --mfa "arn:aws:iam::298577643865:mfa/root-account-mfa-device 974210"
+
+Check MFA Working or Not
+aws s3api list-object-versions --bucket nwaytechno-mumbai
+aws s3api delete-object --bucket nwaytechno-mumbai --VersionId "Z2Zl9W6.3FQA2WGOkgsx2C6R.SHGX09q"  --key index.html
+
+S3 Bucket MFA Disable
+aws s3api put-bucket-versioning --bucket nwaytechno-mumbai --versioning-configuration Status=Suspended,MFADelete=Disabled --mfa "arn:aws:iam::298577643865:mfa/root-account-mfa-device 213962"
+
+
