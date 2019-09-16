@@ -38,10 +38,5 @@ Attach policy to Bucket in Destination Account
 }
 
 
-aws s3 cp besant-vpc-webserver.pem s3://nwaytechno.tk
-
-aws s3 cp s3://nwaytechno.tk .
-
-aws glacier upload-archive --account-id - --vault-name Test --body archive.zip
 
 
