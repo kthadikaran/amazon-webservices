@@ -1,0 +1,21 @@
+﻿
+1. Change pem login
+2. go to your EC2 Console
+3. Under NETWORK & SECURITY, click on Key Pair Click on Create Key Pair
+4. Give your new key pair a name, save the .pem file. The name of the key pair will be used to connect to your instance
+5. Create SSH connection to your instance and keep it open
+6. in PuttyGen, click "Load" to load your .pem file
+7. Keep the SSH-2 RSA radio button checked. Click on "Save private key" You'll get pop-up window warning, click "Yes”
+8. click on "Save public key" as well, so to generate the public key. This is the public key that we're going to copy across to your current instance
+9. Save the public key with the new key pair name and with the extension .pub
+10.Open the public key content in a notepad
+11.copy the content below "Comment: "imported-openssh-key" and before "---- END SSH2 PUBLIC KEY ----
+	Note - you need to copy the content as one line - delete all new lines
+12.On your connected instance, open your authorized_keys file using the tool vi. Run the following command: vi .ssh/authorized_keys you should see the original public key in the file also
+13.move your cursor on the file to the end of your first public key content :type "i" for insert
+14.on the new line, type "ssh-rsa" and add a space before you paste the content of the public key , space, and the name of the .pem file (without the .pem) Note - you should get a line with the same format as the previous line
+15.press the Esc key, and then type :wq! this will save the updated authorized_keys file
+
+now try open a new SSH session to your instance using your new key pair
+
+When you've confirmed you're able to SSH into the instance using the new key pair, u can vi .ssh/authorized_key and delete the old key.
