@@ -1,0 +1,49 @@
+Bastion Host Configuration
+Launch an EC2 instance as you normally would for any other instance.
+
+Apply OS hardening as required.
+
+Set appropriate security groups and NACL rules.
+
+Implement either Proxy Command (Linux connectivity) or Remote Desktop Gateway (Windows connectivity).
+
+Deploy an AWS bastion host in each of the Availability Zones you’re using.
+
+Create ~/.ssh folder in home directory
+
+mkdir  ~/.ssh 
+
+chmod  700 ~/.ssh
+
+Create config file in ~/.ssh enter the Bastion host, Instance details and Proxy command details.
+
+vi ~/.ssh/config
+
+Host BastionBox
+        HostName xx.xx.xx.xx
+        User ubuntu
+        IdentityFile /drives/d/bastionhost.pem
+        ProxyCommand none
+
+Host Server01
+        HostName xx.xx.xx.xx
+        User ubuntu
+        IdentityFile /drives/d/KeyPair/ntech.pem
+        ProxyCommand ssh -q -W %h:%p BastionBox
+
+Host Server02
+        HostName xx.xx.xx.xx
+        User ubuntu
+        IdentityFile /drives/d/KeyPair/ntech01.pem
+        ProxyCommand ssh -q -W %h:%p BastionBox
+
+Proxy Command Option 
+
+-W option is built into new(er) versions of OpenSSH.
+%h representing host name of private instance.
+%p representing port number 22
+
+Host Connectivity
+Connect your private instance from local laptop or desktop.
+#ssh Private_Instance_Hostname
+
