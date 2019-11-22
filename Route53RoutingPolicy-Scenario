@@ -1,0 +1,29 @@
+Route 53 Routing Policy
+
+Scenarios:
+
+Simple:
+Simple routing policy route the traffic to the single resource.
+
+Failover:
+Failover routing allows you to route traffic to a resource when the resource is healthy and 
+to another resource when the first one is unhealthy. This is mainly used when you have the primary site and a disaster recovery site
+
+Latency:
+Use when you have resources in multiple AWS Regions and you want to route traffic to the region that provides the best latency.
+
+GeoProximity:
+Use when you want to route traffic based on the location of your resources and optionally,shift traffic from resources in one location to resources in other location.
+
+Geolocation:
+Route traffic based on the location of users.
+i. You can localize your website and present some or all of your website in the language of your users.
+ii. You can restrict distribution of contents to only the location in which you have distribution rights.
+iii. Useful for load balancing across endpoints in a predictable, easy to manage way, 
+So that each user location is consistently routed to the same endpoint.
+
+Latency based routing cannot guarantee users from the same geographic will be served from the same location for any compliance reason
+
+Weighted:
+Weighted routing policy can be applied when there are multiple resources that perform the same function for e.g., webservers serving the same site
+Weighted resource record sets let you associate multiple resources with a single DNS name
