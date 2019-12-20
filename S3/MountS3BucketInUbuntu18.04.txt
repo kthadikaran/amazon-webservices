@@ -1,0 +1,16 @@
+s3fs
+s3fs allows Linux and macOS to mount an S3 bucket via FUSE. s3fs preserves the native object format for files
+
+apt update
+apt-get remove fuse
+reboot
+apt update
+sudo apt install s3fs
+echo Access key ID:Secret access key > ${HOME}/.passwd-s3fs
+If you are using ~/.passwd-s3fs then permission should be 600
+chmod 600 .passwd-s3fs
+If you are using /etc/passwd-s3fs then permission should be 640
+chmod 640 .passwd-s3fs
+s3fs nwaytech mys3bucket -o passwd_file=${HOME}/.passwd-s3fs
+s3fs nwaytech mys3bucket -o passwd_file=${HOME}/.passwd-s3fs -o dbglevel=info -f -o curldbg
+df -Th
