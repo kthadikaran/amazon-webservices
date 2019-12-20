@@ -1,0 +1,38 @@
+Attach Policy to IAM User in Source Account
+
+{
+    "Version": "2012-10-17",
+    "Statement": [
+        {
+            "Effect": "Allow",
+            "Action": [
+                "s3:*"
+            ],
+            "Resource": [
+                "arn:aws:s3:::nwaytechno.tk",
+                "arn:aws:s3:::nwaytechno.tk/*"
+            ]
+        }
+    ]
+}
+
+
+Attach policy to Bucket in Destination Account
+
+{
+    "Version": "2012-10-17",
+    "Statement": [
+        {
+            "Sid": "S3AccessDelegationOtherAccountIAMUser",
+            "Effect": "Allow",
+            "Principal": {
+                "AWS": "arn:aws:iam::924617627881:user/Anderson"
+            },
+            "Action": "s3:*",
+            "Resource": [
+                "arn:aws:s3:::nwaytechno.tk",
+                "arn:aws:s3:::nwaytechno.tk/*"
+            ]
+        }
+    ]
+}
