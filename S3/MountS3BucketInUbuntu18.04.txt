@@ -17,8 +17,7 @@ s3fs nwaytech mys3bucket -o passwd_file=${HOME}/.passwd-s3fs
 s3fs nwaytech mys3bucket -o passwd_file=${HOME}/.passwd-s3fs -o dbglevel=info -f -o curldbg
 
 Permanent Mount
-nwaytech /root/mys3bucket fuse.s3fs _netdev,allow_other 0 0
-
+nwaytech /root/mys3bucket fuse.s3fs _netdev,allow_other,nonempty 0 0
 df -Th
 
 
