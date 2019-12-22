@@ -1,0 +1,45 @@
+Create S3 Bucket and Enable Static website hosting in bucket properties.
+
+Login facebook developer page and Create Your Facebook App and Get the App ID
+
+Example: 2422283738088009
+
+Also Mention it application URL in facebook application page 
+App Domains: nwaytechno.s3.amazonaws.com
+
+Create an IAM Role to Assign Users Logged in through Facebook
+
+IAM Role FacebookWebIdentityIAMRole
+Policy FacebookWebIdentityIAMRolePolicy
+{
+   "Version": "2012-10-17",
+   "Statement": [
+      {
+         "Action": [
+            "s3:PutObject",
+            "s3:PutObjectAcl"
+         ],
+         "Resource": [
+            "arn:aws:s3:::nwaytechno/facebook-${graph.facebook.com:id}/*"
+         ],
+         "Effect": "Allow"
+      },
+      {
+         "Action": [
+            "s3:ListBucket"
+         ],
+         "Resource": [
+            "arn:aws:s3:::nwaytechno"
+         ],
+         "Effect": "Allow",
+         "Condition": {
+            "StringEquals": {
+               "s3:prefix": "facebook-${graph.facebook.com:id}"
+            }
+         }
+      }
+   ]
+}
+
+
+
