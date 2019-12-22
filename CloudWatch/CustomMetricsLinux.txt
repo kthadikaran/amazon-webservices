@@ -1,0 +1,20 @@
+CloudWatch Custom memory and disk metrics configuration steps for Amazon linux EC2 instances.
+
+CentOS/RHEL
+
+sudo yum install perl-Switch perl-DateTime perl-Sys-Syslog perl-LWP-Protocol-https perl-Digest-SHA
+sudo yum install zip unzip
+
+Debian
+sudo apt-get update
+sudo apt-get install unzip libwww-perl libdatetime-perl
+
+Download Scripts
+cd /opt
+https://github.com/kthadikaran/Amazon-Webservices/blob/master/CloudWatchMonitoringScripts-1.2.1.zip
+unzip CloudWatchMonitoringScripts-1.2.1.zip
+cd /opt/aws-scripts-mon
+./mon-put-instance-data.pl --mem-util --verify --verbose
+
+CronJob
+*/5 * * * * /opt/aws-scripts-mon/mon-put-instance-data.pl --mem-used-incl-cache-buff --mem-util --disk-space-util --disk-path=/ --from-cron
