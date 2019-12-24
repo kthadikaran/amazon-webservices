@@ -1,0 +1,20 @@
+AWSTemplateFormatVersion: 2010-09-09
+#This CloudFormation template deploys VPC Network. 
+Resources:
+  VPC:
+    Type: AWS::EC2::VPC
+    Properties:
+      CidrBlock: 10.1.0.0/16
+      EnableDnsSupport: true
+      EnableDnsHostnames: true
+      Tags: 
+      - Key: Name
+        Value:  !Join ['', [!Ref "AWS::StackName", "-vpc" ]]
+  InternetGateway:
+    Type: AWS::EC2::InternetGateway
+    DependsOn: VPC
+  AttachGateway:
+    Type: AWS::EC2::VPCGatewayAttachment
+    Properties:
+      VpcId: !Ref VPC
+      InternetGatewayId: !Ref InternetGateway
