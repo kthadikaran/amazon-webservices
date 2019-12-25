@@ -1,80 +1,281 @@
 AWSTemplateFormatVersion: 2010-09-09
+
 #This CloudFormation template deploys VPC Network. 
+
+Parameters:
+
+  KeyName:
+
+    Description: Name of an existing EC2 KeyPair to enable SSH access to the instance
+
+    Type: AWS::EC2::KeyPair::KeyName
+
+    ConstraintDescription: Must be the name of an existing EC2 KeyPair.
+
+  #SecurityGroups:
+
+  #  Type: 'List<AWS::EC2::SecurityGroup::Id>' 
+
+  #  Description: The list of SecurityGroupIds must be in your Virtual Private Cloud (VPC)
+
+  InstanceType:
+
+    Description: WebServer EC2 instance type
+
+    Type: String
+
+    Default: t2.micro
+
+    AllowedValues:
+
+    - t2.micro
+
+    - t2.small
+
+    ConstraintDescription: Must be a valid EC2 instance type.
+
+Mappings:
+
+  AWSInstanceType2Arch:
+
+    t2.micro:
+
+      Arch: HVM64
+
+    t2.small:
+
+      Arch: HVM64
+
+  AWSRegionArch2AMI:
+
+    eu-west-2:
+
+      HVM64: ami-0be057a22c63962cb
+
 Resources:
+
   VPC:
+
     Type: AWS::EC2::VPC
+
     Properties:
+
       CidrBlock: 10.1.0.0/16
+
       EnableDnsSupport: true
+
       EnableDnsHostnames: true
+
       Tags: 
+
       - Key: Name
+
         Value:  !Join ['', [!Ref "AWS::StackName", "-vpc" ]]
+
+#Create Internet gateway
+
   InternetGateway:
+
     Type: AWS::EC2::InternetGateway
+
     DependsOn: VPC
+
   AttachGateway:
+
     Type: AWS::EC2::VPCGatewayAttachment
+
     Properties:
+
       VpcId: !Ref VPC
+
       InternetGatewayId: !Ref InternetGateway
+
+#Create public and private subnets.
+
   PublicSubnetA:
+
     Type: AWS::EC2::Subnet
+
     Properties:
+
       VpcId: !Ref VPC
+
       CidrBlock: 10.1.0.0/27
+
       AvailabilityZone: !Select [ 0, !GetAZs ]
+
       Tags:
+
       - Key: Name
+
         Value: !Sub ${AWS::StackName}-public-a
+
   PublicSubnetB:
+
     Type: AWS::EC2::Subnet
+
     Properties:
+
       VpcId: !Ref VPC
+
       CidrBlock: 10.1.0.32/27
+
       AvailabilityZone: !Select [ 1, !GetAZs ]
+
       Tags:
+
       - Key: Name
+
         Value: !Sub ${AWS::StackName}-public-b
+
   PrivateSubnetA:
+
     Type: AWS::EC2::Subnet
+
     Properties:
+
       VpcId: !Ref VPC
+
       CidrBlock: 10.1.0.64/27
+
       AvailabilityZone: !Select [ 0, !GetAZs ]
+
       Tags:
+
       - Key: Name
+
         Value: !Sub ${AWS::StackName}-private-a
+
   PrivateSubnetB:
+
     Type: AWS::EC2::Subnet
+
     Properties:
+
       VpcId: !Ref VPC
+
       CidrBlock: 10.1.0.96/27
+
       AvailabilityZone: !Select [ 1, !GetAZs ]
+
       Tags:
+
       - Key: Name
+
         Value: !Sub ${AWS::StackName}-private-b
+
+
+
+#Create public route tables
+
   PublicRouteTable:
+
     Type: AWS::EC2::RouteTable
+
     Properties:
+
       VpcId: !Ref VPC
+
       Tags:
+
       - Key: Name
+
         Value: Public
+
+
+
+#Create routes in route tables
+
   PublicRoute1:
+
     Type: AWS::EC2::Route
+
     DependsOn: AttachGateway
+
     Properties:
+
       DestinationCidrBlock: 0.0.0.0/0
+
       GatewayId: !Ref InternetGateway
+
       RouteTableId: !Ref PublicRouteTable
+
+
+
+#Associate subnet with route table
+
   PublicSubnetARouteTableAssociation:
+
     Type: AWS::EC2::SubnetRouteTableAssociation
+
     Properties:
+
       SubnetId: !Ref PublicSubnetA
+
       RouteTableId: !Ref PublicRouteTable
+
   PublicSubnetBRouteTableAssociation:
+
     Type: AWS::EC2::SubnetRouteTableAssociation
+
     Properties:
+
       SubnetId: !Ref PublicSubnetB
+
       RouteTableId: !Ref PublicRouteTable
+
+
+
+  InstanceSecurityGroup:
+
+    Type: AWS::EC2::SecurityGroup
+
+    Properties:
+
+      VpcId: !Ref VPC
+
+      GroupDescription: Enable SSH access via port 22
+
+      SecurityGroupIngress:
+
+        - IpProtocol: tcp
+
+          FromPort: 22
+
+          ToPort: 22
+
+          CidrIp: 0.0.0.0/0
+
+
+
+#EC2 Instance creation
+
+  EC2Instance:
+
+    Type: AWS::EC2::Instance
+
+    Properties:
+
+      InstanceType: !Ref InstanceType
+
+      SubnetId: !Ref PublicSubnetA
+
+      SecurityGroupIds: 
+
+        - !GetAtt "InstanceSecurityGroup.GroupId"
+
+      KeyName: !Ref KeyName
+
+      ImageId: !FindInMap 
+
+        - AWSRegionArch2AMI
+
+        - !Ref 'AWS::Region'
+
+        - !FindInMap 
+
+          - AWSInstanceType2Arch
+
+          - !Ref InstanceType
+
+          - Arch
