@@ -23,8 +23,8 @@ Mappings:
     t2.small:
       Arch: HVM64
   AWSRegionArch2AMI:
-    eu-west-2:
-      HVM64: ami-0be057a22c63962cb
+    ap-south-1:
+      HVM64: ami-0123b531fc646552f
 Resources:
   VPC:
     Type: AWS::EC2::VPC
@@ -139,3 +139,11 @@ Resources:
           - AWSInstanceType2Arch
           - !Ref InstanceType
           - Arch
+#Elastic IP Address creation
+  ElasticIPAddress:
+    Type: AWS::EC2::EIP
+  IPAssociation:
+    Type: AWS::EC2::EIPAssociation
+    Properties:
+      InstanceId: !Ref EC2Instance
+      EIP: !Ref ElasticIPAddress
