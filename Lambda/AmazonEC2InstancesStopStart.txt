@@ -51,4 +51,4 @@ Minutes 	Hours 	Day of month 	Month 	Day of week 	Year 	Meaning
 0			10		*				*		?				*		Run at 10:00 am (UTC) every day
 15 			12 		*				* 		? 				*		Run at 12:15 pm (UTC) every day
 0 			18 		? 				* 		MON-FRI 		* 		Run at 6:00 pm (UTC) every Monday through Friday
-0/15		*		*				*		?				*		Run every 15 minutes
+0/15 		 *		 *				 *		 ?				 *		 Run every 15 minutes
