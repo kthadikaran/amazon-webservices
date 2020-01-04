@@ -28,6 +28,22 @@ Metadata (optional)
 AWS::CloudFormation::Init
 Defines configuration tasks for the cfn-init helper script. This script is useful for configuring and installing applications on EC2 instances. For more information, see AWS::CloudFormation::Init.
 
+"MyInstance": {
+
+    "Type": "AWS::EC2::Instance",
+
+    "Metadata" : {
+
+        "AWS::CloudFormation::Init" : {
+
+            "webapp-config": {
+
+                "packages" : {}, "sources" : {}, "files" : {},
+
+                "groups" : {}, "users" : {},
+
+                "commands" : {}, "services" : {}
+
 AWS::CloudFormation::Interface
 Defines the grouping and ordering of input parameters when they are displayed in the AWS CloudFormation console. By default, the AWS CloudFormation console alphabetically sorts parameters by their logical ID. For more information, see AWS::CloudFormation::Interface.
 
