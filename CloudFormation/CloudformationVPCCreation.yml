@@ -1,6 +1,40 @@
 AWSTemplateFormatVersion: 2010-09-09
 #This CloudFormation template deploys VPC Network. 
-Description: 'AWS CloudFormation Sample Template this template shows VPC, Subnat, InternetGateway, Security group, EC2 instance, EIP IP Address creation and association.'
+Description: 'AWS CloudFormation Sample Template this template shows VPC, Subnat, InternetGateway, Security group, EC2 instance, 
+EIP IP Address creation and association.'
+Metadata:
+  AWS::CloudFormation::Interface:
+    ParameterGroups:
+      -
+        Label:
+          default: "Database Configuration"
+        Parameters:
+          - DBName
+          - DBUser
+          - DBPassword
+          - DBRootPassword
+      -
+        Label:
+          default: "EC2 Configuration"
+        Parameters:
+          - InstanceType
+          - KeyName
+          - SSHLocation
+    ParameterLabels:
+      DBName:
+        default: "Name"
+      DBUser:
+        default: "User"
+      DBPassword:
+        default: "Password"
+      DBRootPassword:
+        default: "Root Password"
+      InstanceType:
+        default: "Instance Type"
+      KeyName:
+        default: "Key Pair Name"
+      SSHLocation:
+        default: "SSH IP Address Range"
 Parameters:
   KeyName:
     Description: Name of an existing EC2 KeyPair to enable SSH access to the instance
@@ -140,6 +174,11 @@ Resources:
           - AWSInstanceType2Arch
           - !Ref InstanceType
           - Arch
+      BlockDeviceMappings:
+        -
+          DeviceName: /dev/sdf
+          Ebs:
+            VolumeSize: 20
 #Elastic IP Address creation
   ElasticIPAddress:
     Type: AWS::EC2::EIP
