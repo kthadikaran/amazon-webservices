@@ -1,0 +1,109 @@
+Cloud Formation concepts:
+
+AWS CloudFormation is a template-based service to provision and manage infrastructure on AWS.
+
+You create a template that describes all the AWS resources that you want (like Amazon EC2 instances or Amazon RDS DB instances),
+
+and AWS CloudFormation takes care of provisioning and configuring those resources for you.
+
+Template:
+
+An AWS CloudFormation template is a JSON or YAML formatted text file. 
+You can save these files with any extension, such as .json, .yaml, .template, or .txt. 
+AWS CloudFormation uses these templates as blueprints for building your AWS resources.
+
+Template Sections:
+
+Format Version (optional)
+    The AWS CloudFormation template version that the template conforms to. The template format version is not the same as the API or WSDL version. The template format version can change independently of the API and WSDL versions.
+
+Description (optional)
+    A text string that describes the template. This section must always follow the template format version section.
+
+Metadata (optional)
+    Objects that provide additional information about the template.
+    Metadata Keys
+    Some AWS CloudFormation features retrieve settings or configuration information that you define in the Metadata section. You        define this information in the following AWS CloudFormation-specific metadata keys:
+
+AWS::CloudFormation::Init
+Defines configuration tasks for the cfn-init helper script. This script is useful for configuring and installing applications on EC2 instances. For more information, see AWS::CloudFormation::Init.
+
+"MyInstance": {
+
+    "Type": "AWS::EC2::Instance",
+
+    "Metadata" : {
+
+        "AWS::CloudFormation::Init" : {
+
+            "webapp-config": {
+
+                "packages" : {}, "sources" : {}, "files" : {},
+
+                "groups" : {}, "users" : {},
+
+                "commands" : {}, "services" : {}
+
+AWS::CloudFormation::Interface
+Defines the grouping and ordering of input parameters when they are displayed in the AWS CloudFormation console. By default, the AWS CloudFormation console alphabetically sorts parameters by their logical ID. For more information, see AWS::CloudFormation::Interface.
+
+AWS::CloudFormation::Designer
+Describes how your resources are laid out in AWS CloudFormation Designer (Designer). Designer automatically adds this information when you use it create and update templates. For more information, see What Is AWS CloudFormation Designer?.
+
+Parameters (optional)
+    Values to pass to your template at runtime (when you create or update a stack). You can refer to parameters from the Resources and Outputs sections of the template.
+
+Mappings (optional)
+    A mapping of keys and associated values that you can use to specify conditional parameter values, similar to a lookup table. You can match a key to a corresponding value by using the Fn::FindInMap intrinsic function in the Resources and Outputs sections.
+
+Conditions (optional)
+    Conditions that control whether certain resources are created or whether certain resource properties are assigned a value during stack creation or update. For example, you could conditionally create a resource that depends on whether the stack is for a production or test environment.
+
+Transform (optional)
+    For serverless applications (also referred to as Lambda-based applications), specifies the version of the AWS Serverless Application Model (AWS SAM) to use. When you specify a transform, you can use AWS SAM syntax to declare resources in your template. The model defines the syntax that you can use and how it is processed.
+    You can also use AWS::Include transforms to work with template snippets that are stored separately from the main AWS CloudFormation template. You can store your snippet files in an Amazon S3 bucket and then reuse the functions across multiple templates.
+
+Resources (required)
+    Specifies the stack resources and their properties, such as an Amazon Elastic Compute Cloud instance or an Amazon Simple Storage Service bucket. You can refer to resources in the Resources and Outputs sections of the template.
+
+Outputs (optional)
+    Describes the values that are returned whenever you view your stack's properties. For example, you can declare an output for an S3 bucket name and then call the aws cloudformation describe-stacks AWS CLI command to view the name.
+
+YMAL Syntax:
+
+Cloud Formation Template format:
+AWSTemplateFormatVersion: "version date"
+
+Description:
+  String
+
+Metadata:
+  template metadata
+
+Parameters:
+  set of parameters
+
+Mappings:
+  set of mappings
+
+Conditions:
+  set of conditions
+
+Transform:
+  set of transforms
+
+Resources:
+  set of resources
+
+Outputs:
+  set of outputs
+
+
+Stacks:
+When you use AWS CloudFormation, you manage related resources as a single unit called a stack. You create, update, and delete a collection of resources by creating, updating, and deleting stacks.
+All the resources in a stack are defined by the stack's AWS CloudFormation template.
+
+Change sets:
+If you need to make changes to the running resources in a stack, you update the stack. 
+Before making changes to your resources, you can generate a change set, which is a summary of your proposed changes. 
+Change sets allow you to see how your changes might impact your running resources, especially for critical resources, before implementing them. 
