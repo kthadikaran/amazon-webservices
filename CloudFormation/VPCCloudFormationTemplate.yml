@@ -1,0 +1,131 @@
+AWSTemplateFormatVersion: 2010-09-09
+Description: "This Cloud formation template create stack for amazon vpc resources."
+Resources:
+#Create a VPC using CIDR Range 10.1.0.0/16.
+  VPC:
+    Type: AWS::EC2::VPC
+    Properties:
+      CidrBlock: 10.1.0.0/16
+      EnableDnsHostnames: true
+      EnableDnsSupport: true
+      Tags:
+      - Key: Name
+        Value: !Join ["",[!Ref "AWS::StackName","-vpc" ]]
+#Create InternetGateway for VPC.
+  InternetGateway:
+    Type: AWS::EC2::InternetGateway
+    DependsOn: VPC
+    Properties:
+      Tags:
+      - Key: Name
+        Value: !Join ["",[!Ref "AWS::StackName","-igw" ]]
+#Attach created InternetGateway with VPC.
+  AttachInternetGateway:
+    Type: AWS::EC2::VPCGatewayAttachment
+    Properties:
+      VpcId: !Ref VPC
+      InternetGatewayId: !Ref InternetGateway
+#Create Public subnets for web servers.
+  PublicSubnetA:
+    Type: AWS::EC2::Subnet
+    Properties:
+      VpcId: !Ref VPC
+      CidrBlock: 10.1.0.0/27
+      AvailabilityZone: !Select [ 0,!GetAZs ]
+      Tags:
+      - Key: Name
+        Value: !Join ["", [!Ref "AWS::StackName", "-PublicSubnetA" ]]
+  PublicSubnetB:
+    Type: AWS::EC2::Subnet
+    Properties:
+      VpcId: !Ref VPC
+      CidrBlock: 10.1.0.32/27
+      AvailabilityZone: !Select [ 1, !GetAZs ]
+      Tags:
+      - Key: Name
+        Value: !Join ["", [!Ref "AWS::StackName", "-PublicSubnetB" ]]
+  PrivateSubnetA:
+    Type: AWS::EC2::Subnet
+    Properties:
+      VpcId: !Ref VPC
+      CidrBlock: 10.1.0.64/27
+      AvailabilityZone: !Select [ 0, !GetAZs ]
+      Tags:
+       - Key: Name 
+         Value: !Join ["", [!Ref "AWS::StackName", "-PrivateSubnetA" ]]
+  PrivateSubnetB:
+    Type: AWS::EC2::Subnet
+    Properties:
+      VpcId: !Ref VPC
+      CidrBlock: 10.1.0.96/27
+      AvailabilityZone: !Select [ 1, !GetAZs ]
+      Tags:
+       - Key: Name
+         Value: !Join ["", [!Ref "AWS::StackName", "-PrivateSubnetB" ]]
+  PublicRouteTable:
+    Type: AWS::EC2::RouteTable
+    Properties:
+      VpcId: !Ref VPC
+      Tags:
+      - Key: Name
+        Value: !Join ["", [!Ref "AWS::StackName","-prtb" ]]
+  PublicRouteTableRoutes:
+    Type: AWS::EC2::Route
+    DependsOn: AttachInternetGateway
+    Properties:
+      DestinationCidrBlock: 0.0.0.0/0
+      RouteTableId: !Ref PublicRouteTable
+      GatewayId: !Ref InternetGateway
+  PublicSubnetARouteTableAssociation:
+    Type: AWS::EC2::SubnetRouteTableAssociation
+    Properties:
+      SubnetId: !Ref PublicSubnetA
+      RouteTableId: !Ref PublicRouteTable
+  PublicSubnetBRouteTableAssociation:
+    Type: AWS::EC2::SubnetRouteTableAssociation
+    Properties:
+      SubnetId: !Ref PublicSubnetB
+      RouteTableId: !Ref PublicRouteTable
+  InstanceSecurityGroup:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      VpcId: !Ref VPC
+      GroupDescription: Enable SSH access via port 22
+      SecurityGroupIngress:
+        - IpProtocol: tcp
+          FromPort: 22
+          ToPort: 22
+          CidrIp: 0.0.0.0/0
+        - IpProtocol: tcp
+          FromPort: 80
+          ToPort: 80
+          CidrIp: 0.0.0.0/0
+      Tags:
+      - Key: Name
+        Value: 'webserver-sg'
+Outputs:
+  VpcId:
+    Description: VpcId of the new virtual private cloud.
+    Value: !Ref VPC
+  PublicSubnetAId:
+    Description:
+    Value: !Ref PublicSubnetA
+  PublicSubnetBId:
+    Description:
+    Value: !Ref PublicSubnetB
+  PrivateSubnetAId:
+    Description:
+    Value: !Ref PrivateSubnetA
+  PrivateSubnetBId:
+    Description:
+    Value: !Ref PrivateSubnetB
+  InternetGatewayId:
+    Description:
+    Value: !Ref InternetGateway
+  RouteTableId:
+    Description:
+    Value: !Ref PublicRouteTable
+  InstanceSecurityGroupId:
+    Description:
+    Value: !Ref PublicRouteTable
+  
