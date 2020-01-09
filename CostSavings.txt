@@ -1,0 +1,28 @@
+Advantage of AWS Savings Plans over AWS Reserved Instances
+
+    With Reserved Instances, you're locking yourself into a certain instance type for 1 or 3 years but your 
+    requirements may change in that time.
+    
+    Prices may change over your commitment period but you'll see no benefit of that 
+    reduction with Reserved Instances
+    
+    Savings Plans allow you to take advantage of a discount without committing to use it on any specific 
+    instance type (although flexibility varies between the Compute Plan and the EC2 Instance Plan)
+    
+    Savings Plans can be applied to Fargate as well as EC2 although it cannot be applied to RDS.
+    
+    The complexity of RIs has been eliminated with Savings Plans - there is far less planning around which type 
+    of RI, which family and wether you'll want to later convert the RI or sell it on the marketplace.
+    
+    There's also less infrastructure planning - organizations no longer have to so deeply 
+    plan complex infrastructure 1-3 years out, they can simply commit to using a certain amount of compute.
+    With Savings Plans, the fundamentals allow you to flexibly transfer workloads between 
+    instance types to meet demand and leverage something akin to elasticity, although you gain no advantage from down time. 
+    With Reserved Instances, an organization sees no advantage from switching instance types or 
+    families as they're committed to 24/7/365 usage of a specific instance type regardless.
+
+Advantage of AWS Reserved Instances over Savings Plans
+
+    You can get shorter term RIs on the marketplace
+    You can get discounts for RDS as well as EC2 (but not Fargate).
+    The discounts are larger and at the top end may be over 60% in the case of some 3 year all upfront terms.
