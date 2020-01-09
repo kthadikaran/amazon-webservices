@@ -24,6 +24,10 @@ HA is intended to handle problems while a system is running
 while DR is intended to handle problems after a system fails.
 
 
-RTO is the targeted amount of time for a recovery to complete in the event of failure. 
+RTO(Recovery Time Objective)is the maximum time to restore critical functions following failure event.
 RPO is the targeted amount of time during which data is at risk for loss in the event of a failure.
 
+
+The difference between an incident and a problem:
+Incident is any event that is not part of the standard operation of a service and that causes an interruption in service.
+Problem is the unknown cause of one or more incidents.
