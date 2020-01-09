@@ -28,9 +28,10 @@ For example, many organizations have power generators that can take over in case
 HA is intended to handle problems while a system is running 
 while DR is intended to handle problems after a system fails.
 
+RTO(Recovery Time Objective) represents how long it takes to restore from the incident.
 
-RTO(Recovery Time Objective)is the maximum time to restore critical functions following failure event.
-RPO is the targeted amount of time during which data is at risk for loss in the event of a failure.
+RPO defines the maximum allowable amount of lost data measured in time from a failure occurrence to
+the last valid backup.
 
 
 The difference between an incident and a problem:
