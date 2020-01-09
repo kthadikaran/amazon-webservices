@@ -1,5 +1,5 @@
 High Availability:
-HA defining systems to operate continuously without failure for a long time. 
+HA defines system to operate continuously without failure for a long time. 
 
 What is fault tolerance
 
