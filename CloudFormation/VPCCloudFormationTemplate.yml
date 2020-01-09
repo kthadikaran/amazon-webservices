@@ -105,27 +105,26 @@ Resources:
         Value: 'webserver-sg'
 Outputs:
   VpcId:
-    Description: VpcId of the new virtual private cloud.
+    Description: New virtual private cloud has been created.
     Value: !Ref VPC
   PublicSubnetAId:
-    Description:
+    Description: PublicSubnetA has been created with CIDR 10.1.0.0/27.
     Value: !Ref PublicSubnetA
   PublicSubnetBId:
-    Description:
+    Description: PublicSubnetB has been created with CIDR 10.1.0.32/27.
     Value: !Ref PublicSubnetB
   PrivateSubnetAId:
-    Description:
+    Description: PrivateSubnetA has been created with CIDR 10.1.0.64/27.
     Value: !Ref PrivateSubnetA
-  PrivateSubnetBId:
-    Description:
+  PrivateSubnetB:
+    Description: PrivateSubnetB has been created with CIDR 10.1.0.96/27.
     Value: !Ref PrivateSubnetB
-  InternetGatewayId:
-    Description:
+  InternetGateway:
+    Description: Internetgateway has been created for vpc.
     Value: !Ref InternetGateway
-  RouteTableId:
-    Description:
+  RouteTable:
+    Description: Route table has been created for vpc.
     Value: !Ref PublicRouteTable
-  InstanceSecurityGroupId:
-    Description:
+  InstanceSecurityGroup:
+    Description: New security group has been created in vpc.
     Value: !Ref PublicRouteTable
-  
