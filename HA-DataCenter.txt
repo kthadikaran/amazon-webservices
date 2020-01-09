@@ -1,3 +1,6 @@
+High Availability:
+HA defining systems to operate continuously without failure for a long time. 
+
 What is fault tolerance
 
 Fault tolerance refers to the ability of a system (computer, network, cloud cluster, etc.) to 
