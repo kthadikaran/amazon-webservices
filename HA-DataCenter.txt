@@ -22,3 +22,8 @@ For example, many organizations have power generators that can take over in case
 
 HA is intended to handle problems while a system is running 
 while DR is intended to handle problems after a system fails.
+
+
+RTO is the targeted amount of time for a recovery to complete in the event of failure. 
+RPO is the targeted amount of time during which data is at risk for loss in the event of a failure.
+
