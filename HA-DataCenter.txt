@@ -1,0 +1,24 @@
+What is fault tolerance
+
+Fault tolerance refers to the ability of a system (computer, network, cloud cluster, etc.) to 
+continue operating without interruption when one or more of its components fail.
+
+The objective of creating a fault-tolerant system is to prevent disruptions arising from a single point of failure, 
+ensuring the high availability and business continuity of mission-critical applications or systems.
+
+Fault-tolerant systems use backup components that automatically take the place of failed components, ensuring no loss of service. 
+These include:
+
+Hardware systems:that are backed up by identical or equivalent systems. 
+For example, a server can be made fault tolerant by using an identical server running in parallel, 
+with all operations mirrored to the backup server.
+
+Software systems that are backed up by other software instances. 
+For example, a database with customer information can be continuously replicated to another machine. 
+If the primary database goes down, operations can be automatically redirected to the second database.
+
+Power sources that are made fault tolerant using alternative sources. 
+For example, many organizations have power generators that can take over in case main line electricity fails.
+
+HA is intended to handle problems while a system is running 
+while DR is intended to handle problems after a system fails.
