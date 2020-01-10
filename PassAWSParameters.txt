@@ -1,0 +1,13 @@
+Option														Description
+Data Type 													Description
+String 														String of numbers or letters.
+Number 														An integer. If you use the parameter elsewhere in the template, then the parameter value becomes a string.
+List<Number> 												An array of integers that are separated by commas. If you use the parameter elsewhere in the template, the parameter values becomes a list of strings.
+CommaDelimitedList 											An array of strings that are separated by commas.
+AWS::EC2::KeyPair::KeyName (AWS-specific data type) 		An Amazon EC2 key pair name.
+AWS::EC2::SecurityGroup::Id (AWS-specific data type)	 	A security group ID number.
+AWS::EC2::Subnet::Id (AWS-specific data type) 				A subnet ID number.
+AWS::EC2::VPC::Id(AWS-specific data type) 					A VPC ID number.
+List<AWS::EC2::VPC::Id> (AWS-specific data type) 			An array of VPC ID numbers.
+List<AWS::EC2::SecurityGroup::Id> (AWS-specific data type) 	An array of security group ID numbers.
+List<AWS::EC2::Subnet::Id> (AWS-specific data type) 		An array of subnet ID numbers.
