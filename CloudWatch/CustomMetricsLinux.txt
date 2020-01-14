@@ -11,8 +11,9 @@ sudo apt-get install unzip libwww-perl libdatetime-perl
 
 Download Scripts
 cd /opt
-https://github.com/kthadikaran/Amazon-Webservices/blob/master/CloudWatchMonitoringScripts-1.2.1.zip
+wget  http://aws-cloudwatch.s3.amazonaws.com/downloads/CloudWatchMonitoringScripts-1.2.1.zip
 unzip CloudWatchMonitoringScripts-1.2.1.zip
+
 cd /opt/aws-scripts-mon
 ./mon-put-instance-data.pl --mem-util --verify --verbose
 
