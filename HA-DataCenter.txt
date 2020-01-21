@@ -37,3 +37,36 @@ the last valid backup.
 The difference between an incident and a problem:
 Incident is any event that is not part of the standard operation of a service and that causes an interruption in service.
 Problem is the unknown cause of one or more incidents.
+
+Below are some of the AWS-specific design recommendations, which you can implement in your AWS architecture:
+
+Build redundancy at each layer and avoid single point of failures, including:
+  
+  Instance/Function level – Have multiple instances for each function, 
+  including components like a NAT/Web/App/DB servers
+  
+  Storage – Take regular backups to durable storage like Amazon Simple Storage Service (Amazon S3)
+  
+  Networking – Have backup DX/VPN connections
+  
+  Availability Zone (AZ) Level – Utilize multiple AZs within a region.
+
+Externalize data/state to a common store and keep a replica:
+  Never store session state in the web/app tiers; externalize that to a cache or persistent database layer (like Amazon DynamoDB).
+  
+  For Amazon Relational Database Service (Amazon RDS) (or database on Amazon Elastic Compute Cloud (Amazon EC2)), 
+  have multi-AZ deployments and possibly also have same-region/cross-region Read Replicas enabled. 
+
+Use health checks, monitoring and auto-recovery features:
+  
+  Utilize Amazon Route53, Amazon Elastic Load Balancer (Amazon ELB) and Amazon EC2 instance level health/status checks.
+  
+  You could also tie that with Amazon EC2 auto-scaling functionality in case of any particular instance going down and therefore launching a replacement instance. Amazon EC2 now also has auto recovery feature which helps in case of underlying host level failures
+  Enable continuous, detailed Amazon CloudWatch metrics and custom monitoring along-with alerting can tremendously help detect and act on failures in almost real-time. You can also make use of the Amazon CloudWatch Logs feature, in which real-time monitoring of application logs can also be done
+
+Optimized App architecture based on micro-services/SOA pattern – 
+Decouple components using services like Amazon Simple Queue Service (Amazon SQS) 
+which make the architecture resilient to individual service level failures
+
+Test all possible failure points – It’s very important to test instance, 
+AZ or even region level failures and see if your architecture is able to sustain that or not. 
