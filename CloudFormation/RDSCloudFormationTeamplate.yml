@@ -46,3 +46,41 @@ Resources:
       EngineVersion: 5.7.25
       MasterUsername: !Ref 'DBUser'
       MasterUserPassword: !Ref 'DBPassword'
+      
+AWSTemplateFormatVersion: 2010-09-09
+Description: "This cloud formation template written for creating stack RDS."
+Parameters:
+  VpcId:
+    Description: "Name of the existing VPC."
+    #Type: List<AWS::EC2::VPC::Id>
+    Type: String
+    ConstraintDescription: "Must be an existing VpcId."
+    Default: vpc-09bdd2e1b9de4bdcc 
+  SubnetIds:
+    Description: "Name of the existing subnets id in VPCs."
+    Type: List<AWS::EC2::Subnet::Id>
+    ConstraintDescription: "Must be an existing VpcId."
+    #Default: "subnet-04811736af2cfd56c,subnet-0569ebb5b9efd6869"
+  InstanceType:
+    Description: "RDS DB instance family."
+    Type: String
+    Default: db.t2.micro
+Resources: 
+  DBSubnetGroup: 
+    Type: "AWS::DocDB::DBSubnetGroup"
+    Properties: 
+      DBSubnetGroupDescription: "This DB Subnet group created for RDS DB instances."
+      SubnetIds: !Ref SubnetIds
+      Tags: 
+      - Key: Name
+        Value: !Join ["", [!Ref "AWS::StackName","-DBSubnetgroup"]]
+  RDSDBInstanceSecurityGroup:
+    Type: "AWS::EC2::SecurityGroup"
+    Properties:
+      VpcId: !Ref VpcId
+      GroupDescription: "Enable RDS Instance access."
+      SecurityGroupIngress:
+        - IpProtocol: tcp
+          FromPort: 3306
+          ToPort: 3306
+          CidrIp: 0.0.0.0/0
