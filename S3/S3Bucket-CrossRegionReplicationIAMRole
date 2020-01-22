@@ -1,5 +1,3 @@
-S3Bucket-CrossRegionReplicationIAMRole
-
 {
     "Version": "2012-10-17",
     "Statement": [
@@ -10,8 +8,8 @@ S3Bucket-CrossRegionReplicationIAMRole
             ],
             "Effect": "Allow",
             "Resource": [
-                "arn:aws:s3:::nwaytechno",
-                "arn:aws:s3:::nwaytechno/*"
+                "arn:aws:s3:::nwaytechno-source",
+                "arn:aws:s3:::nwaytechno-source/*"
             ]
         },
         {
@@ -22,7 +20,7 @@ S3Bucket-CrossRegionReplicationIAMRole
                 "s3:GetObjectVersionTagging"
             ],
             "Effect": "Allow",
-            "Resource": "arn:aws:s3:::nwaytechno-singapore/*"
+            "Resource": "arn:aws:s3:::nwaytechno-destination/*"
         }
     ]
 }
