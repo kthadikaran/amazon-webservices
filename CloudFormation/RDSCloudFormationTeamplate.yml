@@ -1,53 +1,4 @@
 AWSTemplateFormatVersion: 2010-09-09
-Description: 'This is cloudformation template will create stack for RDS resources using existing vpc and subnets.'
-Parameters:
-  VpcId:
-    Description: "Name of an existing vpc ids, Select preferred vpc id for as your requirements."
-    Type: List<AWS::EC2::VPC::Id>
-    ConstraintDescription: "Must be an existing vpc ids lists."
-  SubnetId:
-    Description: "Name of an existing subnet ids, Select preferred subnet ids for your database subnets."
-    Type: List<AWS::EC2::Subnet::Id>
-    ConstraintDescription: "Must be an existing subnet ids lists."
-  DBName:
-    Default: MyDatabase
-    Description: The database name
-    Type: String
-    MinLength: '1'
-    MaxLength: '64'
-    AllowedPattern: '[a-zA-Z][a-zA-Z0-9]*'
-    ConstraintDescription: must begin with a letter and contain only alphanumeric
-      characters.
-  DBUser:
-    NoEcho: 'true'
-    Description: The database admin account username
-    Type: String
-    MinLength: '1'
-    MaxLength: '16'
-    AllowedPattern: '[a-zA-Z][a-zA-Z0-9]*'
-    ConstraintDescription: must begin with a letter and contain only alphanumeric
-      characters.
-  DBPassword:
-    NoEcho: 'true'
-    Description: The database admin account password
-    Type: String
-    MinLength: '8'
-    MaxLength: '41'
-    AllowedPattern: '[a-zA-Z0-9]*'
-    ConstraintDescription: must contain only alphanumeric characters.
-Resources:
-  MyDB:
-    Type: AWS::RDS::DBInstance
-    Properties:
-      DBName: !Ref 'DBName'
-      AllocatedStorage: '5'
-      DBInstanceClass: db.t2.small
-      Engine: MySQL
-      EngineVersion: 5.7.25
-      MasterUsername: !Ref 'DBUser'
-      MasterUserPassword: !Ref 'DBPassword'
-      
-AWSTemplateFormatVersion: 2010-09-09
 Description: "This cloud formation template written for creating stack RDS."
 Parameters:
   VpcId:
@@ -56,31 +7,99 @@ Parameters:
     Type: String
     ConstraintDescription: "Must be an existing VpcId."
     Default: vpc-09bdd2e1b9de4bdcc 
-  SubnetIds:
+  SubnetId01:
     Description: "Name of the existing subnets id in VPCs."
-    Type: List<AWS::EC2::Subnet::Id>
+    #Type: List<AWS::EC2::Subnet::Id>
+    Type: String
     ConstraintDescription: "Must be an existing VpcId."
-    #Default: "subnet-04811736af2cfd56c,subnet-0569ebb5b9efd6869"
-  InstanceType:
+    Default: subnet-04811736af2cfd56c
+  SubnetId02:
+    Description: "Name of the existing subnets id in VPCs."
+    #Type: List<AWS::EC2::Subnet::Id>
+    Type: String
+    ConstraintDescription: "Must be an existing VpcId."
+    Default: subnet-0569ebb5b9efd6869
+  DBInstanceType:
     Description: "RDS DB instance family."
     Type: String
     Default: db.t2.micro
+    AllowedValues:
+    - db.t2.micro
+    - db.t2.small
+    - db.t2.medium
+    - db.t3.micro
+    - db.t3.small
+    ConstraintDescription : "Must select a valid database instance type."
+  DBInstanceAccess: 
+    Description: "Create a Publically Accessible RDS database instance."
+    Type: String
+    Default: true
+    AllowedValues: [true, false]
+    ConstraintDescription: "Access value must be true or false."
+  DBInstanceMultiAZ:
+    Description: "Availability zone option for RDS."
+    Type: String
+    Default: false
+    AllowedValues: [true, false]
+    ConstraintDescription: "Multi-Az must be either true or false."
+  RDSDBName:
+    Description: "The database name."
+    Type: String
+    MinLength: 8
+    MaxLength: 41
+    AllowedPattern: ^[a-zA-Z0-9]*$
+    ConstraintDescription: must begin with a letter and contain only alphanumeric characters. 
+  RDSDBAdminUser:
+    NoEcho: 'true'
+    Description: "The database admin account username."
+    Type: String
+    MinLength: 8
+    MaxLength: 41
+    AllowedPattern: ^[a-zA-Z0-9]*$
+    ConstraintDescription: must begin with a letter and contain only alphanumeric
+  RDSDBPasswd: 
+    NoEcho: true
+    Description: The database admin account password
+    Type: String
+    MinLength: 8
+    MaxLength: 41
+    AllowedPattern: ^[a-zA-Z0-9]*$
+    ConstraintDescription: must begin with a letter and contain only alphanumeric characters.
 Resources: 
   DBSubnetGroup: 
-    Type: "AWS::DocDB::DBSubnetGroup"
+    Type: "AWS::RDS::DBSubnetGroup"
     Properties: 
       DBSubnetGroupDescription: "This DB Subnet group created for RDS DB instances."
-      SubnetIds: !Ref SubnetIds
+      SubnetIds:
+      - !Ref SubnetId01
+      - !Ref SubnetId02
       Tags: 
       - Key: Name
         Value: !Join ["", [!Ref "AWS::StackName","-DBSubnetgroup"]]
-  RDSDBInstanceSecurityGroup:
+  InstanceSecurityGroup:
     Type: "AWS::EC2::SecurityGroup"
     Properties:
       VpcId: !Ref VpcId
-      GroupDescription: "Enable RDS Instance access."
+      GroupDescription: "Enable access via port 3306."
       SecurityGroupIngress:
         - IpProtocol: tcp
           FromPort: 3306
           ToPort: 3306
           CidrIp: 0.0.0.0/0
+  RDSDBInstance:
+    Type: "AWS::RDS::DBInstance"
+    Properties:
+      DBName: !Ref RDSDBName
+      AllocatedStorage: '5'
+      DBInstanceClass: !Ref DBInstanceType
+      Engine: MySQL
+      EngineVersion: 8.0.16
+      MasterUsername: !Ref RDSDBAdminUser
+      MasterUserPassword: !Ref RDSDBPasswd
+      VPCSecurityGroups: 
+        - !GetAtt "InstanceSecurityGroup.GroupId"
+      DBSubnetGroupName: !Ref DBSubnetGroup
+      PubliclyAccessible: !Ref DBInstanceAccess
+      Tags:
+      - Key: Name
+        Value: !Join ["",[!Ref "AWS::StackName","-NwaytechDB"]]
