@@ -29,7 +29,8 @@ If you find this entry, comment it out by placing a # (hash) character at the be
 Step8: In a text editor, open the file /etc/postfix/sasl_passwd. If the file doesn't already exist, create it and Add the following line to /etc/postfix/sasl_passwd: 
 
 nano /etc/postfix/sasl_passwd
-[]email-smtp.ap-south-1.amazonaws.com]:587 AKIATYKEGJWBUQ6JQU44:BDwZ9SzlZKuO//YCMn0uDVbQB8e9mrJLcjdAuxNagUPv
+[email-smtp.ap-south-1.amazonaws.com]:587 AKIATYKEGJWB6U2DA53N:BCpcuSWc8Ut0/i2Kx7eyuvFGLdFyXajH5tFkKzWEBO4C
+
 
 Step9: create a hashmap database file containing your SMTP credentials: 
 sudo postmap hash:/etc/postfix/sasl_passwd
