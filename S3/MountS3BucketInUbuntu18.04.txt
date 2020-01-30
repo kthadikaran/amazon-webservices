@@ -21,6 +21,11 @@ nwaytech /root/mys3bucket fuse.s3fs _netdev,allow_other,nonempty 0 0
 df -Th
 
 
+For Ubuntu or Debian
+
+# apt-get update
+# sudo apt-get install automake autotools-dev fuse g++ git libcurl4-gnutls-dev libfuse-dev libssl-dev libxml2-dev make pkg-config
+
 For RHEL or CentOS or Amzon Linux.
 
 # yum remove fuse
