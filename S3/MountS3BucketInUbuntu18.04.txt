@@ -21,4 +21,35 @@ nwaytech /root/mys3bucket fuse.s3fs _netdev,allow_other,nonempty 0 0
 df -Th
 
 
+For RHEL or CentOS or Amzon Linux.
+
+# yum remove fuse
+# yum install s3fs
+# sudo yum install automake fuse fuse-devel gcc-c++ git libcurl-devel libxml2-devel make openssl-devel
+# git clone https://github.com/s3fs-fuse/s3fs-fuse.git
+# ls
+# cd s3fs-fuse
+# ./autogen.sh
+# ./configure --prefix=/usr --with-openssl
+# make
+# sudo make install
+# which s3fs
+# touch /etc/passwd-s3fs
+# vim /etc/passwd-s3fs
+# sudo chmod 640 /etc/passwd-s3fs
+# mkdir /mys3bucket
+# s3fs nwaytech -o use_cache=/tmp -o allow_other -o uid=1001 -o mp_umask=002 -o multireq_max=5 /mys3bucket
+# df -Th
+Use automatically remount the bucket 
+#which s3fs
+#/usr/local/bin/s3fs
+#vi /etc/rc.local
+/usr/local/bin/s3fs your_bucketname -o use_cache=/tmp -o allow_other -o uid=1001 -o mp_umask=002 -o multireq_max=5 /mys3bucket
+
+Use automatically remount the bucket. If your bucket has created with dot.
+
+# which s3fs /usr/local/bin/s3fs
+# vi /etc/rc.local
+# s3fs your_bucketname /mys3bucket -o use_cache=/tmp -o allow_other -o uid=1001 -o mp_umask=002 -o multireq_max=5 -o use_path_request_style -o url=https://s3-{{aws_region}}.amazonaws.com
+ 
 
