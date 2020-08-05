@@ -1,0 +1,37 @@
+1. List all the buckets in s3
+	aws s3 ls
+	aws s3 mb s3://demobucketnway --region ap-south-1
+	aws s3 rb s3://demobucketnway 
+	aws s3 rb s3://demobucketnway --force
+
+2. Calculate size of s3 bucket
+	aws s3 ls s3://nwyexpress --human-readable --recursive --summarize
+
+3. Copy with grants option
+
+	aws s3 cp file.txt s3://my-bucket/ --grants read=uri=http://acs.amazonaws.com/groups/global/AllUsers 
+	full=emailaddress=user@example.com
+
+4. Copy S3 objects source to destination bucket:
+
+	
+	aws s3 cp s3://demobucketnway/file-operationrole.yml s3://nwyexpress
+	
+	aws s3 cp s3://nwyexpress/file-operationrole.yml .
+	aws s3 cp s3://nwyexpress/file-operationrole.yml .  --recursive
+	aws s3 cp file-operationrole.yml s3://nwyexpress    --expires 2014-10-01T20:30:00Z
+	aws s3 cp dir_name s3://nwyexpress/ --recursive  --exclude "*.jpg"
+	aws s3 cp s3://nwyexpress/ s3://demobucketnway/  --recursive --exclude "doc/*"
+	aws s3 cp s3://nwyexpress/file-operationrole.yml --acl public-read-write
+
+
+	
+5. Move S3 objects source to destination:
+
+	aws s3 mv s3://demobucketnway/file-operationrole.yml s3://nwyexpress
+
+6. Remove objects from s3 buckets
+	aws s3 rm s3://nwyexpress/file-operationrole.yml 
+
+7. Website configuration
+	aws s3 website s3://demobucketnway --index-document index.html --error-document error.html
