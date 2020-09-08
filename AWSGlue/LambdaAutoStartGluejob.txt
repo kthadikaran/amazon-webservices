@@ -1,0 +1,73 @@
+How can I use a Lambda function to automatically start an AWS Glue job when a crawler run completes?
+I want to use an AWS Lambda function to automatically start an AWS Glue job when a crawler run completes. How can I do that?
+Short Description
+To start a job when a crawler run completes, create an AWS Lambda function and an Amazon CloudWatch Events rule. You can modify this method to automate other AWS Glue functions.
+Note: You can also use AWS Glue workflows to automatically start a job when a crawler run completes. This method requires that you start the crawler from the Workflows page on the AWS Glue console. For more information, see How can I use AWS Glue workflows to automatically start a job when a crawler run completes?
+Resolution
+Before completing the following steps, be sure that you have:
+•	An AWS Glue extract, transform, and load (ETL) job.
+•	An AWS Glue crawler.
+•	An AWS Identity and Access Management (IAM) role for Lambda with permission to run AWS Glue jobs. For example, set up a service-linked role for Lambda that has the AWSGlueServiceRole policy attached to it.
+Create the Lambda function
+1.    Open the Lambda console.
+2.    Choose Create function.
+Note: If you have no Lambda functions, then the Get started page appears. Choose Create a function and then continue to the next step.
+3.    Be sure that Author from scratch is selected, and then configure the following options:
+For Name, enter a name for your function.
+For Runtime, choose one of the Python options.
+For Role, choose Choose an existing role.
+For Existing role, select an IAM role that has permission to run AWS Glue jobs.
+4.    Choose Create function.
+5.    In the Function code section, paste code similar to the following. Be sure to replace MyTestJob with the name of your AWS Glue ETL job.
+# Set up logging
+import json
+import os
+import logging
+logger = logging.getLogger()
+logger.setLevel(logging.INFO)
+
+# Import Boto 3 for AWS Glue
+import boto3
+client = boto3.client('glue')
+
+# Variables for the job: 
+glueJobName = "MyTestJob"
+
+# Define Lambda function
+def lambda_handler(event, context):
+    logger.info('## TRIGGERED BY EVENT: ')
+    logger.info(event['detail'])
+    response = client.start_job_run(JobName = glueJobName)
+    logger.info('## STARTED GLUE JOB: ' + glueJobName)
+    logger.info('## GLUE JOB RUN ID: ' + response['JobRunId'])
+    return response
+6.    In the top-right corner of the page, choose Save, and then choose Test.
+7.    Open the AWS Glue console and confirm that the job started.
+Create the CloudWatch Events rule
+1.    Open the CloudWatch console.
+2.    In the navigation pane, choose Rules, and then choose Create rule.
+3.    In the Event Source section, choose Event Pattern, and then choose the element labeled Build event pattern to match events by service. From the resulting drop-down list, choose Custom event pattern.
+4.    In the Build custom event pattern box, replace the existing code with the following code. Be sure to replace MyTestCrawl with the name of your AWS Glue crawler.
+{
+    "detail-type": [
+        "Glue Crawler State Change"
+    ],
+    "source": [
+        "aws.glue"
+    ],
+    "detail": {
+        "crawlerName": [
+            "MyTestCrawl"
+        ],
+        "state": [
+            "Succeeded"
+        ]
+    }
+}
+5.    In the Targets section on the right side of the page, choose Add target.
+6.    In the drop-down list, choose Lambda function, if it isn't already selected.
+7.    In the Function drop-down list, choose the name of your Lambda function.
+8.    In the lower-right corner of the page, choose Configure details.
+9.    Enter a Name and Description for your CloudWatch Events rule, and then choose Create rule.
+To test the Lambda function and CloudWatch Events rule, run your AWS Glue crawler. Then, check the History tab of your AWS Glue ETL job. The Run status should display Starting or Running.
+Note: CloudWatch Events are emitted on a best effort basis. In rare cases, events might be out of sequence or missing and the Lambda function might not run.
