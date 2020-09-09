@@ -15,18 +15,20 @@ AWS CloudFormation uses these templates as blueprints for building your AWS reso
 Template Sections:
 
 Format Version (optional)
-    The AWS CloudFormation template version that the template conforms to. The template format version is not the same as the API or WSDL version. The template format version can change independently of the API and WSDL versions.
+    The AWS CloudFormation template version that the template conforms to. The template format version is not the same as the API or WSDL version. 
+    The template format version can change independently of the API and WSDL versions.
 
 Description (optional)
     A text string that describes the template. This section must always follow the template format version section.
 
 Metadata (optional)
     Objects that provide additional information about the template.
-    Metadata Keys
-    Some AWS CloudFormation features retrieve settings or configuration information that you define in the Metadata section. You        define this information in the following AWS CloudFormation-specific metadata keys:
+    Metadata Keys Some AWS CloudFormation features retrieve settings or configuration information that you define in the Metadata section. You 
+    define this information in the following AWS CloudFormation-specific metadata keys:
 
 AWS::CloudFormation::Init
-Defines configuration tasks for the cfn-init helper script. This script is useful for configuring and installing applications on EC2 instances. For more information, see AWS::CloudFormation::Init.
+Defines configuration tasks for the cfn-init helper script. This script is useful for configuring and installing applications on EC2 instances. 
+For more information, see AWS::CloudFormation::Init.
 
 "MyInstance": {
 
@@ -61,13 +63,17 @@ Conditions (optional)
 
 Transform (optional)
     For serverless applications (also referred to as Lambda-based applications), specifies the version of the AWS Serverless Application Model (AWS SAM) to use. When you specify a transform, you can use AWS SAM syntax to declare resources in your template. The model defines the syntax that you can use and how it is processed.
-    You can also use AWS::Include transforms to work with template snippets that are stored separately from the main AWS CloudFormation template. You can store your snippet files in an Amazon S3 bucket and then reuse the functions across multiple templates.
+    
+    You can also use AWS::Include transforms to work with template snippets that are stored separately from the main AWS CloudFormation template. 
+    You can store your snippet files in an Amazon S3 bucket and then reuse the functions across multiple templates.
 
 Resources (required)
-    Specifies the stack resources and their properties, such as an Amazon Elastic Compute Cloud instance or an Amazon Simple Storage Service bucket. You can refer to resources in the Resources and Outputs sections of the template.
+    Specifies the stack resources and their properties, such as an Amazon Elastic Compute Cloud instance or an Amazon Simple Storage Service bucket. 
+    You can refer to resources in the Resources and Outputs sections of the template.
 
 Outputs (optional)
-    Describes the values that are returned whenever you view your stack's properties. For example, you can declare an output for an S3 bucket name and then call the aws cloudformation describe-stacks AWS CLI command to view the name.
+    Describes the values that are returned whenever you view your stack's properties. For example, you can declare an output for an S3 bucket name and then 
+    call the aws cloudformation describe-stacks AWS CLI command to view the name.
 
 YMAL Syntax:
 
