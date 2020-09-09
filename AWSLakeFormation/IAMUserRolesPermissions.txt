@@ -1,0 +1,154 @@
+Setting up Lake Formation
+
+1. To create an administrator user for yourself and add the user to an administrators group (console)
+
+2. Create IAM Role for workflows.
+	Role Name:  LakeFormationWorkflowRole
+Policy Name:  AWSGlueServiceRole
+Inline Policy Name:
+{
+    "Version": "2012-10-17",
+    "Statement": [
+        {
+            "Effect": "Allow",
+            "Action": [
+                 "lakeformation:GetDataAccess",
+                 "lakeformation:GrantPermissions"
+             ],
+            "Resource": "*"
+        },
+        {
+            "Effect": "Allow",
+            "Action": ["iam:PassRole"],
+            "Resource": [
+                "arn:aws:iam::<account-id>:role/LakeFormationWorkflowRole"
+            ]
+        }
+    ]
+}
+
+3. Create a Data Lake Administrator
+
+To create a data lake administrator (console: we recommend that you do not select an IAM administrative user (user with the AdministratorAccess AWS managed policy) to be the data lake administrator).
+
+Role Name: Data Lake Administrator
+Policy Name: AWSLakeFormationDataAdmin
+
+Optional Policy Name: 
+
+AWSGlueConsoleFullAccess, 
+CloudWatchLogsReadOnlyAccess
+AmazonAthenaFullAccess
+
+Inline Policy Name:  LakeFormationSLRInlinePolicy
+{
+    "Version": "2012-10-17",
+    "Statement": [
+        {
+            "Effect": "Allow",
+            "Action": "iam:CreateServiceLinkedRole",
+            "Resource": "*",
+            "Condition": {
+                "StringEquals": {
+                    "iam:AWSServiceName": "lakeformation.amazonaws.com"
+                }
+            }
+        },
+        {
+            "Effect": "Allow",
+            "Action": [
+                "iam:PutRolePolicy"
+            ],
+            "Resource": "arn:aws:iam::<account-id>:role/aws-service-role/lakeformation.amazonaws.com/AWSServiceRoleForLakeFormationDataAccess"
+        }
+    ]
+}
+
+PassRoleInlinePolicy to the use
+
+{
+    "Version": "2012-10-17",
+    "Statement": [
+        {
+            "Sid": "PassRolePermissions",
+            "Effect": "Allow",
+            "Action": [
+                "iam:PassRole"
+            ],
+            "Resource": [
+                "arn:aws:iam::<account-id>:role/LakeFormationWorkflowRole"
+            ]
+        }
+    ]
+}
+Policy Name: GrantCrossAccountInlinePolicy
+
+{
+    "Version": "2012-10-17",
+    "Statement": [
+        {
+            "Effect": "Allow",
+            "Action": [
+                "ram:CreateResourceShare"
+            ],
+            "Resource": "*",
+            "Condition": {
+                "ForAllValues:StringEquals": {
+                    "ram:RequestedResourceType": [
+                        "glue:Table",
+                        "glue:Database",
+                        "glue:Catalog"
+                    ]
+                }
+            }
+        },
+        {
+            "Effect": "Allow",
+            "Action": [
+                "ram:UpdateResourceShare",
+                "ram:DeleteResourceShare"
+            ],
+            "Resource": "*",
+            "Condition": {
+                "ForAllValues:StringLike": {
+                    "ram:ResourceShareName": [
+                        "LakeFormation*"
+                    ]
+                }
+            }
+        },
+        {
+            "Effect": "Allow",
+            "Action": [
+                "glue:PutResourcePolicy",
+                "organizations:DescribeOrganization",
+                "organizations:DescribeAccount",
+                "ram:Get*",
+                "ram:List*"
+            ],
+            "Resource": "*"
+        },
+        {
+            "Effect": "Allow",
+            "Action": [
+                "organizations:ListRoots",
+                "organizations:ListAccountsForParent",
+                "organizations:ListOrganizationalUnitsForParent"
+            ],
+            "Resource": "*"
+        }
+    ]
+}
+
+Policy is RAMConsole.
+
+{
+    "Version": "2012-10-17",
+    "Statement": [
+        {
+            "Effect": "Allow",
+            "Action": "ec2:DescribeAvailabilityZones",
+            "Resource": "*"
+        }
+    ]
+}
