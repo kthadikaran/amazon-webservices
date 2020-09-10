@@ -64,10 +64,12 @@ Designer automatically adds this information when you use it create and update t
     The intrinsic function Fn::FindInMap or its short form, !FindInMap is used to return the value associated with the key.    
 
 Conditions (optional)
-    Conditions that control whether certain resources are created or whether certain resource properties are assigned a value during stack creation or update. For example, you could conditionally create a resource that depends on whether the stack is for a production or test environment.
+    Conditions that control whether certain resources are created or whether certain resource properties are assigned a value during stack creation 
+    or update. For example, you could conditionally create a resource that depends on whether the stack is for a production or test environment.
 
 * Transform (optional)
-    For serverless applications (also referred to as Lambda-based applications), specifies the version of the AWS Serverless Application Model (AWS SAM) to use. When you specify a transform, you can use AWS SAM syntax to declare resources in your template. The model defines the syntax that you can use and how it is processed.
+    For serverless applications (also referred to as Lambda-based applications), specifies the version of the AWS Serverless Application Model (AWS SAM) to use. 
+    When you specify a transform, you can use AWS SAM syntax to declare resources in your template. The model defines the syntax that you can use and how it is processed.
     
     You can also use AWS::Include transforms to work with template snippets that are stored separately from the main AWS CloudFormation template. 
     You can store your snippet files in an Amazon S3 bucket and then reuse the functions across multiple templates.
@@ -111,7 +113,8 @@ Outputs:
 
 
 Stacks:
-When you use AWS CloudFormation, you manage related resources as a single unit called a stack. You create, update, and delete a collection of resources by creating, updating, and deleting stacks.
+When you use AWS CloudFormation, you manage related resources as a single unit called a stack. 
+You create, update, and delete a collection of resources by creating, updating, and deleting stacks.
 All the resources in a stack are defined by the stack's AWS CloudFormation template.
 
 Change sets:
