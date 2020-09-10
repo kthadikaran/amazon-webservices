@@ -1,6 +1,7 @@
 AWSTemplateFormatVersion: 2010-09-09
 #This CloudFormation template deploys VPC Network. 
-Description: 'AWS CloudFormation Sample Template this template shows VPC, Subnat, InternetGateway, Security group, EC2 instance, EIP IP Address creation and association.'
+Description: 'AWS CloudFormation Sample Template this template shows VPC, Subnat, InternetGateway, Security group, 
+EC2 instance, EIP IP Address creation and association.'
 Parameters:
   KeyName:
     Description: Name of an existing EC2 KeyPair to enable SSH access to the instance
