@@ -1,0 +1,61 @@
+De monstration on AWS  Code Build
+This  is areference  guidedocumented forDemonstration  on AWS  Code  Commit,  we  discussed above.
+
+Prerequisites:
+	1)IAM   user  account   with  AWSCodeBuildAdminAccess,  AmazonS3ReadOnlyAccess  and IAMFullAccess
+	2)An S3 bucket to store build artifacts
+	3)Integrated source code(source code + buildspec file) ofUI application to be stored in a CodeCommit repository. For this demo we have placed the source code in a repository named hellotelecom-UIrepo
+	
+Step 1:Navigate to CodeBuild screen from AWS management console
+
+Step 2:Click on create build project
+
+Step 3:Enter the project name <hellotelecom-UIbuild>
+
+Step 4:Choose CodeCommitas   the   source   provider   and   then   choose   the   repository (hellotelecom-UIrepo) of the UI code
+
+Step 5:Under Environment section choose the below values:
+	-Environment image: Managed image
+	-Operating system:  Ubuntu
+	-Runtime: Node.js
+	-Runtime version: aws/codebuild/nodejs.10.4.1
+
+Step 6:Choose New service role and leave the Role name unchanged
+
+Step 7:Choose Use abuildpsec fileoption
+
+Step  8:Choose the location  for  output artifacts. 
+	Let  it be Amazon  S3and  choose the bucketcreated for storing the build artifacts
+	
+Step 9:Choose the output artifacts packaging to be in Zip format
+
+Step 10:Click Create build project
+
+Step  11:Build Project  will be  successfully created  and  can  be  found  under  Build  projects  in CodeBuild screen
+
+Step 12:To run the build, click on the project and then click on start build
+
+Step 13:Verify the build configuration details and click on Start  build
+
+Step 14:Build will be successful after a couple of minutes. To view the Output artifacts, click on View artifacts
+
+Step 15:You will be redirected to S3 bucket. Click on Downloadto view the build artifacts
+
+Step 16:Open the zip file and  verify the build artifacts
+	2)Now on the similar lines perform build for application tier
+	Before  performing  the  demonstration  kindly  place  the  integrated  source   code  (code  of application tier + buildspec file) in a CodeCommit repository.
+	
+	Configuration details for reference:
+		Project name <hellotelecom-Appbuild>
+		Source provider -AWS CodeCommit
+		Repository-<Name of the repository with app source code>
+		Under Environment section choose the below values:
+			Environment image: Managed image
+			Operating system:  Ubuntu
+			Runtime: JavaoRuntime version: aws/codebuild/java:openjdk-8
+			Image version: aws/codebuild/java:openjdk-8-1.6.0
+		Service  role: Either  choose  New  role  or  choosethe  service  role  created  during  the configuration of build for UI application
+		Builspec: Use a buildspec file
+		Type (Under Artifacts): Amazon S3
+		Bucket name: <Bucket  created for storing build artifacts>
+		Artifacts Packaging: Zip
