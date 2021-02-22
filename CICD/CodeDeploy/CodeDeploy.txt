@@ -1,0 +1,62 @@
+De mons tration on AWS  Code De ploy
+
+This  is  areference  guide documented  for Demonstration  on  AWS  CodeDeploy,  we  discussed above.
+
+Prerequisites:
+
+1)IAM user account with AWS CodeDeployFullAccess, AWSS3FullAccess, AWSEC@FullAccessand CloudWatchEventsFullAccess
+2)Build artifacts(Compiled along with appspec file)of HelloTelecom application stored in an S3 bucket
+3)Two EC2 instances. One each todeploy UI application and the backend code written in Java. During the instance creation, kindly ensure that the followingare taken care:
+	a)Ports 22,80,  8000  and 3306  are open 
+	b)Create anIAM role with the below policyand attach  it to the instances
+	{
+		"Version":"2012-10-17",
+		"Statement": 
+		[
+			{
+				"Action": 
+				[
+					"s3:Get*",
+					"s3:List*"
+					],
+					"Effect": "Allow",
+					"Resource": "*"
+			}
+		]
+	}
+	c)CodeDeploy agent is installed on the EC2 instances 
+
+4)A service rolefor CodeDeploy with AmazonEC2FullAccess,  AmazonS3FullAccess and AWSCoedeployRole policies attached to it 
+
+Login to AWS management console with the IAM user account created with policies mentioned inthe 1stprerequisite.
+To deploy the UI application of HelloTelecom application, kindlyfollow the below steps.
+
+Step 1:Creating an Application
+	a.Navigate to CodeDeploy screen from AWS management console
+	b.Click on Create Application
+	c.Enter the application name, choose the compute platform as EC2/on-premises and click on create project
+	d.Application will be successfully created and can be found under Applications in CodeDeploy screen
+
+Step 2: Creating Deployment group
+
+	a)Click on the application created in Step 1 and then click on Create deployment group
+	b)Give a name for deployment group (hellotelecom-UIdep)and choose the service role created for this demonstration(as mentioned in the 4thprerequsite) 
+	c)Choose the deployment type as In-placed)Choose Amazon  EC2 instancesunder Environment configuration and enter the Key, value Tags of the EC2 instance on to which the UI application needs to be deployed.
+	e)Choose load balancer if required. Else uncheck the load balancer and click on Create deployment group
+	f)Deployment group will be successfully created and can be found under deployment groups of the application (hellotelecom-UIapp)
+
+Step 3:Deploying the application
+	a)To deploy the application, click on the deployment group created in step 2 (hellotelecom-UIdep) and choose create deployment
+	b)Choose the deployment group created in Step 2,then choose My application is stored in Amazon S3and enter the object URL  of build artifacts placed in the S3 bucket.
+	c)Then choose the revision type(Zipin this demo)and click on Create deployment
+	d)Application will be successfully deployed
+	e)Login to the UI instance and ensure that the apache is running
+
+Step 4: Now on the similar lines, kindly deploy the backend application written  in Java. Before triggering the deployment, kindly ensure that the application instance is running and CodeDeploy agent is installed on it.
+
+Step 5: Once the application tier is successfully deployed, connect to the application instance and ensure apache and application jar are running
+
+Step 6: Verify the application by trying to access the application.
+	a)Get the public IPaddress of UI instance from EC2 console
+	b)Type the IP address in the browser. Application login page will be visible if its successfully deployed. Try logging in with any of the user Id and password mentioned in the customertable
+	Note: Kindly ensure that  the database is available before deploying the application tier
