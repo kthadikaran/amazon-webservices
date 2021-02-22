@@ -1,0 +1,62 @@
+Demonstration Guide on AWS Code Pipeline
+This is a reference guidedocumented for Demonstration on AWS Code Commit, we discussed above.
+
+Create an AWS account at http://aws.amazon.comand get started.
+Use Code Pipeline and automate the entire cycle starting from building the code till deployment.
+
+Step 1: Initial Configuration for CodePipeline
+
+	Before starting using Code Pipeline, you must use an IAM Managed Policy to assign AWS CodePipeline Permissions to the IAM User.
+	 
+	1.Go to IAM dashboard. Click on Users, choose Policies,and add following policiesfrom the list of policies.:
+
+		AWSCodePipelineFullAccess 
+		AWS CodeBuild Full Access
+		AWS CodeDeploy Full Access
+		AWS CodePipeline Full Access
+		AWS S3 Full Access
+		AWS EC2 Full Access
+		CloudWatchEventsFullAccess
+
+	2.On the Policy Details page, choose Attach.
+
+	3.On the Attach Policy page, choose Attach Policy.
+
+Step 3: CreateaPipeline
+
+	1.Open the AWS CodePipeline console. 
+	
+	2.Click on create pipeline and give an apt name to the pipeline as shown:
+	
+	3.In order to create a pipeline, you must include a source stage, a build stage and a deployment stage. 
+	
+	4.Create a source stage:
+		a.Select source where youhave kept your source code i.e. the type of repository where your source code is stored. 
+		b.The source can be a S3 bucket or code commit, or GitHub. We have used AWS CodeCommit for demonstration. 
+		c.In Repository name, choose the name of the AWS CodeCommit repository you want to use as the source location for your pipeline. In Branch name, from the drop-down list, you can choose the branch you want to use. 
+		d.After you choose the AWS CodeCommit repository name and branch, a message is displayed in Change detection options showing the Amazon CloudWatch Events rule that will be created for this pipeline. Accept the defaults under Change detection options. This allows AWS CodePipeline to use Amazon CloudWatch Events to detect changes for your new pipeline. 
+
+	5.Create a build stage:
+		Under Build option for Project, In Project name, choose the name of the build project.
+	
+	6.Add a deployment stage:
+		a.Choose CodeDeploy under deploy tab. 
+		b.Choose the application in Code deploy. 
+		c.In Deployment group, type the name of a deployment group for the application. Choose Next step. 
+	
+	7.Create a service role for CodePipeline to access other resources in our account. 
+	
+	8.On the Review page, review your pipeline configuration, and then choose Create pipeline to create the pipeline. 
+	9.You will now see the CodePipeline being set up.Once you have created your pipeline, you can view itin the console. The pipeline starts to run automatically after you create it. 
+
+	10.See View Pipeline Details and History in AWS CodePipeline.
+	
+	11.On similar lines, we can create a pipeline for Java source code i.e. the application layer.
+
+	12.Once instances are upand the pipeline succeeds, you can Access the application using: <public ip address of ec2>/You have successfully deployed the application using the developer tools AWS Code Commit, Code Build, Code Deploy and Code Pipeline.
+
+Step 4: Trigger Pipelineto deploy application updates
+	a.Make some changes in the UI code.
+	b.Upload the latest code to Code Commit repository using git commands on git client.
+		You will see how the pipeline isautomatically triggered when the source code is updated and pushed to the repository.Observe the how Code Commit is in progress and once it succeeds, it automatically triggers code build to create the new build file and once ready, it triggers code deploy for the latest push of application to production.
+	c.Refresh the browserwith application URLand you will see that thenew code is successfully integrated and deployed.That’s all !!
