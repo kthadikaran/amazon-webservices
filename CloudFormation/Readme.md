@@ -25,15 +25,16 @@ CloudFormation uses these templates as blueprints for building your AWS resource
 The following example shows a JSON-formatted template fragment.
 
 {
+
   "AWSTemplateFormatVersion" : "version date",
 
   "Description" : "JSON string",
 
-  "Metadata" : {
+  "Metadata" : {    
     template metadata
   },
 
-  "Parameters" : {
+  "Parameters" : {  
     set of parameters
   },
   
