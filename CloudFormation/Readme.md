@@ -169,3 +169,23 @@ This is pretty straightforward – you just need to define DeletionPolicy with R
 Let’s say for example that you want to delete a deployed application. This app uses S3 for storing its object and RDS as its database, and you want to keep a copy of this resource as your reference. You may want to update its stack and add DeletionPolicy: Retain for S3 and DeletionPolicy: Snapshot for RDS before deleting it.
 
 ### UpdatePolicy
+
+Use the UpdatePolicy attribute to specify how AWS CloudFormation handles updates to the following resources:
+
+AWS::AutoScaling::AutoScalingGroup,  
+AWS::ElastiCache::ReplicationGroup  
+AWS::Elasticsearch::Domain  
+AWS::Lambda::Alias  
+
+### UpdateReplacePolicy attribute:
+
+Use the UpdateReplacePolicy attribute to retain or (in some cases) backup the existing physical instance of a resource when it is replaced during a stack update operation.
+
+# Authorization and Access Control
+You can use IAM with AWS CloudFormation to control what users can do with AWS CloudFormation, such as whether they can view stack templates, create stacks, or delete stacks.
+
+In addition to AWS CloudFormation actions, you can manage what AWS services and resources are available to each user.
+
+That way, you can control which resources users can access when they use AWS CloudFormation.
+
+For example, you can specify which users can create Amazon EC2 instances, terminate database instances, or update VPCs. Those same permissions are applied anytime they use AWS CloudFormation to do those actions.
