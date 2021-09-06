@@ -135,8 +135,15 @@ Describes the values that are returned whenever you view your stack's properties
 # Stacks
 When you use CloudFormation, you manage related resources as a single unit called a stack. You create, update, and delete a collection of resources by creating, updating, and deleting stacks. All the resources in a stack are defined by the stack's CloudFormation template. To create those resources, you create a stack by submitting the template that you created, and CloudFormation provisions all those resources for you.
 
+# Nested Stacks
+Nested stacks are stacks created as part of other stacks. You create a nested stack within another stack by using the AWS::CloudFormation::Stack resource. As your infrastructure grows, common patterns can emerge in which you declare the same components in multiple templates.
+
 # Change sets
 If you need to make changes to the running resources in a stack, you update the stack. Before making changes to your resources, you can generate a change set, which is a summary of your proposed changes. Change sets allow you to see how your changes might impact your running resources, especially for critical resources, before implementing them
+
+# Stack Sets
+
+AWS CloudFormation StackSets extends the functionality of stacks by enabling you to create, update, or delete stacks across multiple accounts and Regions with a single operation. Using an administrator account, you define and manage an AWS CloudFormation template, and use the template as the basis for provisioning stacks into selected target accounts across specified AWS Regions.
 
 # How does AWS CloudFormation work?
 
@@ -179,7 +186,22 @@ AWS::Lambda::Alias
 
 ### UpdateReplacePolicy attribute:
 
-Use the UpdateReplacePolicy attribute to retain or (in some cases) backup the existing physical instance of a resource when it is replaced during a stack update operation.
+When you initiate a stack update, AWS CloudFormation updates resources based on differences between what you submit and the stack's current template and parameters. If you update a resource property that requires that the resource be replaced, AWS CloudFormation recreates the resource during the update. Recreating the resource generates a new physical ID.
+
+AWS CloudFormation creates the replacement resource first, and then changes references from other dependent resources to point to the replacement resource.
+I.E. You can apply the UpdateReplacePolicy attribute to any resource. UpdateReplacePolicy is only executed if you update a resource property whose update behavior is specified as Replacement, thereby causing AWS CloudFormation to replace the old resource with a new one with a new physical ID. For example, if you update the Engine property of an AWS::RDS::DBInstance resource type, AWS CloudFormation creates a new resource and replaces the current DB instance resource with the new one. The UpdateReplacePolicy attribute would then dictate whether AWS CloudFormation deleted, retained, or created a snapshot of the old DB instance. The update behavior for each property of a resource is specified in the reference topic for that resource in the AWS Resource and Property Types Reference. For more information on resource update behavior, see Update Behaviors of Stack Resources.
+BE AWARE OF the UpdateReplacePolicy is not a resource property but it is a parameter of the logic resource. ( it must not go under the property section)
+The following snippet contains an Amazon RDS database instance resource with a Retain policy for replacement. When this resource is replaced with a new resource with a new physical ID, AWS CloudFormation leaves the old database instance without deleting it.
+    AWSTemplateFormatVersion: 2010-09-09
+    Resources:
+      myDB:
+        Type: 'AWS::RDS::DBInstance'
+        DeletionPolicy: Retain
+        UpdateReplacePolicy: Retain
+        Properties: {} 
+Options
+Retain AWS CloudFormation keeps the resource without deleting the resource or its contents when the resource is replaced. You can add this policy to any resource type. Note that resources that are retained continue to exist and continue to incur applicable charges until you delete those resources.
+If a resource is replaced, the UpdateReplacePolicy retains the old physical resource but removes it from AWS CloudFormation's scope.
 
 # Authorization and Access Control
 You can use IAM with AWS CloudFormation to control what users can do with AWS CloudFormation, such as whether they can view stack templates, create stacks, or delete stacks.
