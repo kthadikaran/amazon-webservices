@@ -147,3 +147,19 @@ The buckets are accessible to anyone with Amazon Simple Storage Service (Amazon 
 You can use your own bucket and manage its permissions by manually uploading templates to Amazon S3. Then whenever you create or update a stack, specify the Amazon S3 URL of a template file.
 
 ![image](https://user-images.githubusercontent.com/41946619/132156847-71178fde-3509-4d7f-8e00-f87a09d225b0.png)
+
+
+# CreationPolicy
+CreationPolicy only applies to three resources AWS::AppStream::Fleet, AWS::AutoScaling::AutoScalingGroup, AWS::EC2::Instance, AWS::CloudFormation::WaitCondition
+
+Primary purpose of CreationPolicy is to wait for "signals" from instances. When you create an instance using CFN, you can add your bootstrap scripts to User Data. For example, install some packages, setup some config files. CFN does not check if the bootstrap script execute successful. This is problematic, because your bootstrap script may fail, and you will not know about this until too late. To overcome this issue you can add CreationPolicy to the instance so that it waits for cfn-signal from the instance. With this, your bootstrap script can signal to CFN that the script executed successful.
+
+# DependsOn
+Primary purpose of DependsOn is relative ordering of resource creation in CFN. By its nature, CFN attempts to creates resources in parallel. This can lead to issues, if for example your instance requires some other resource to be created beforehand (e.g. RDS database). In this case, you can tell CFN to create the instance only after the RDS database was successfully created.
+
+# DeletionPolicy
+Deleting a stack on CloudFormation also removes all the provisioned resources in it. In some cases, you want some resources to be retained even after deleting its stack. The good thing is that you can do this by defining its DeletionPolicy.
+
+This is pretty straightforward – you just need to define DeletionPolicy with Retain value and for the resources that support snapshot, (like RDS databases) you can set Snapshot as its value. With DeletionPolicy: Snapshot, a snapshot is created before a resource is deleted. This allows you to have a backup of the resource that’s been deleted from the stack.
+
+Let’s say for example that you want to delete a deployed application. This app uses S3 for storing its object and RDS as its database, and you want to keep a copy of this resource as your reference. You may want to update its stack and add DeletionPolicy: Retain for S3 and DeletionPolicy: Snapshot for RDS before deleting it.
