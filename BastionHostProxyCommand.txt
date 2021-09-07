@@ -47,3 +47,4 @@ Host Connectivity
 Connect your private instance from local laptop or desktop.
 #ssh Private_Instance_Hostname
 
+https://docs.marklogic.com/guide/ec2/CloudFormation#id_65928
