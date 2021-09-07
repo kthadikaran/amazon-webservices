@@ -67,34 +67,39 @@ The following example shows a JSON-formatted template fragment.
 
 The following example shows a YAML-formatted template fragment.
 
-AWSTemplateFormatVersion: "version date"
+AWSTemplateFormatVersion:
+'version date' (optional) # version of the CloudFormation template. Only accepted value is '2010-09-09'
 
-Description:
-  String
+Description: 
+String' (optional) # a text description of the Cloudformation template
 
 Metadata:
-  template metadata
+  'template metadata' (optional) # objects that provide additional information about the template
 
 Parameters:
-  set of parameters
+   'set of parameters' (optional) # a set of inputs used to customize the template
 
 Rules:
-  set of rules
+  'set of rules' (optional) # a set of rules to validate the parameters provided at deployment/update
 
 Mappings:
-  set of mappings
+  'set of mappings' (optional) # a mapping of keys and associated values
 
 Conditions:
-  set of conditions
+  'set of conditions' (optional) # conditions that control whether certain resources are created
 
 Transform:
-  set of transforms
+  'set of transforms' (optional) # for serverless applications
 
 Resources:
-  set of resources
+  'set of resources' (required) # a components of your infrastructure
+
+Hooks: 
+
+'set of hooks' (optional) # Used for ECS Blue/Green Deployments
 
 Outputs:
-  set of outputs
+  'set of outputs' (optional) # values that are returned whenever you view your stack's properties
   
 ### Template sections
 Templates include several major sections. The Resources section is the only required section. Some sections in a template can be in any order. However, as you build your template, it can be helpful to use the logical order shown in the following list because values in one section might refer to values from a previous section.
@@ -134,6 +139,8 @@ Describes the values that are returned whenever you view your stack's properties
 
 # Stacks
 When you use CloudFormation, you manage related resources as a single unit called a stack. You create, update, and delete a collection of resources by creating, updating, and deleting stacks. All the resources in a stack are defined by the stack's CloudFormation template. To create those resources, you create a stack by submitting the template that you created, and CloudFormation provisions all those resources for you.
+
+![image](https://user-images.githubusercontent.com/41946619/132316998-90e2070a-c82c-4c13-b82d-67ffc21a3949.png)
 
 # Nested Stacks
 Nested stacks are stacks created as part of other stacks. You create a nested stack within another stack by using the AWS::CloudFormation::Stack resource. As your infrastructure grows, common patterns can emerge in which you declare the same components in multiple templates.
