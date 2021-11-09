@@ -1,0 +1,57 @@
+Demonstration on AWS Code Commit
+This is a reference guidedocumented for Demonstration on AWS Code Commit, we discussed above.
+
+Create an AWS account at http://aws.amazon.comand get started.
+
+Step 1: Initial Configuration for CodeCommit
+As root user can't clone the repo, create a different user.
+
+1.Create a new IAMuser. 
+	a.In the IAM console, in the navigation pane, click on Add User.
+	b.Create an IAM user, or use an existing one, in your AWS account. Make sure you have an access key ID and a secret access key associated with that IAM user.
+	Example-CICDuser and assign a password as shown:
+	c.Log off and sign-in asnew user
+
+2.AssignIAM policies 
+	a.In the IAM console, choose Users, and then choose the IAM user you want to configure for CodeCommit access.
+	b.On the Permissions tab, choose Add Permissions.
+	c.From the list of policies, selectAWS CodeCommit Full Access, IAMReadOnly Access, IAMSelfManageServiceSpecificCredentials Or IAMFullAccess
+	
+
+Step 2: Create a CodeCommit Repository
+	First step is to create a code commit repository, using the web console, or AWS CLI.
+	a.Navigate to Code Commitdashboard. 
+	b.In the region selector, choose the AWS Region where you want to create the repository.
+	c.Click on Create repositoryand provide a name and click on create repository. 
+
+Step 3: Add Files to Your Repository
+	You can add files to repository directly in the CodeCommit console, or uploadfilesfrom your local computer using the CodeCommit console.
+	You can also clone the repository to your local computer, and then uploading files to the CodeCommit repository using a Git client.Let’s do it using Git.
+
+1.Install GIT clientFirst, youneed to install a GIT client on our local machine. We can download Git client from https://git-scm.com/download/gui/windows. Download the Git client version 1.7.9 or later. 
+
+2.Create Git Credentials for HTTPS Connections to CodeCommitAfter you have installed Git, create HTTPS Git credentials for your IAM user in IAM.Configure the GIT credentials for the IAM user account using IAM console. 
+
+This will help AWS to authenticate all the HTTPS connection requests to AWS Code Commit repositories.
+
+	a.GIT credentials in IAM-Click on users and then on the User id created for accessing Code Commit. 
+	b.Now under the user account summary, click on security credentials.
+	c.Scroll down to find an option called HTTPS GIT credentials for AWS Code Commit.
+	d.Click on generate to generate username and password to authenticate HTTPS connections to AWS Code Commit repositories.
+	e.Copy user name and password or by Download credentialsto download this information as a .CSV file
+
+Step 4: Connect to the CodeCommit Console and Clone the Repository
+	a.Go to the Code Commit dashboard.
+	b.Go the repository andChoose Connect.
+	c.Copy the command URL to mentioned on repository screen to clone the repository.
+	d.Open the GIT client installed on the local system and paste the command.
+	e.Provide the GIT credentials when asked for authenticationThe repository would be cloned as shown:
+	f.Find the cloned repository in the path ThisPC/OSDisk(c:)/Users/UsernameStep 5: Upload files to CodeCommit Repositorya.Place the UI code of Hellotelecom application in this folder and push it to Code Commit repository.b.Open the GIT clientc.Change the directory to the cloned repositorycd hellotelecom-UIrepod.Run the following commandto stage the change to the shared repo:gitadd *. 
+	e.To commit the pushed code, use the command:gitcommit –m “—comments” .–m is used for adding comments.git commit -m "added UI code "f.Use the following command topush initial committo CodeCommit repository (origin) from the default branch in your local repo (master):gitpush origin master
+
+Step 5: Verify the Upload 
+Go toCode Commit repository in AWS management console and check whether the code is pushed successfully or not.
+On similar lines, create a repo for Java Maven application, as shown for reference:
+a.Creating repository:
+b.Upload files from local cloned repository
+c.Verify Upload of Java code:
